@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Tetes Coffee</title>
+</head>
+<body style="
+    background: url('{{ url_for('static', filename='coffee_rorozoa_3_04.jpg') }}') no-repeat center center fixed;
+    background-size: cover;
+    text-align: center;
+    color: white;
+    font-family: Arial;
+">
+
+    <div style="background: rgba(0,0,0,0.6); padding:20px; margin-top:50px; display:inline-block; border-radius:10px;">
+
+        <img src="/static/logo.png.png" width="120"><br><br>
+
+        <h1>Tetes Coffee</h1>
+        <h3>Ordene lo que guste llevar</h3>
+
+        <form method="POST">
+            <input type="text" name="nombre" placeholder="Nombre" style="padding:10px;"><br><br>
+
+            <select name="bebida" style="padding:10px;">
+                <option>Café Americano - $30</option>
+                <option>Cappuccino - $45</option>
+                <option>Latte - $40</option>
+                <option>Mocha - $50</option>
+            </select><br><br>
+
+            <button type="submit" style="padding:10px; background:#6D4C41; color:white;">
+                Realizar pedido
+            </button>
+        </form>
+
+        <h3>{{ mensaje }}</h3>
+
+    </div>
+
+</body>
+</html>
