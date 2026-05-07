@@ -4,28 +4,28 @@ import os
 
 app = Flask(__name__)
 
-# ================= CONEXION BASE DE DATOS =================
+# ================= DATABASE =================
 
 DATABASE_URL = os.environ.get("DATABASE_URL")
-
-conexion = psycopg2.connect(DATABASE_URL)
-cursor = conexion.cursor()
-
-# Crear tabla si no existe
-cursor.execute("""
-CREATE TABLE IF NOT EXISTS pedidos (
-    id SERIAL PRIMARY KEY,
-    nombre TEXT,
-    bebida TEXT
-)
-""")
-
-conexion.commit()
 
 # ================= PAGINA PRINCIPAL =================
 
 @app.route("/", methods=["GET", "POST"])
 def index():
+
+    conexion = psycopg2.connect(DATABASE_URL)
+    cursor = conexion.cursor()
+
+    # Crear tabla si no existe
+    cursor.execute("""
+    CREATE TABLE IF NOT EXISTS pedidos (
+        id SERIAL PRIMARY KEY,
+        nombre TEXT,
+        bebida TEXT
+    )
+    """)
+
+    conexion.commit()
 
     mensaje = ""
 
@@ -34,28 +34,42 @@ def index():
         nombre = request.form["nombre"]
         bebida = request.form["bebida"]
 
-        if nombre != "":
+        cursor.execute(
+            "INSERT INTO pedidos (nombre, bebida) VALUES (%s, %s)",
+            (nombre, bebida)
+        )
 
-            cursor.execute(
-                "INSERT INTO pedidos (nombre, bebida) VALUES (%s, %s)",
-                (nombre, bebida)
-            )
+        conexion.commit()
 
-            conexion.commit()
+        mensaje = f"Pedido realizado para {nombre}"
 
-            mensaje = f"Pedido para {nombre}: {bebida}"
-
-    # MOSTRAR PEDIDOS
-    cursor.execute("SELECT * FROM pedidos ORDER BY id DESC")
-    pedidos = cursor.fetchall()
+    conexion.close()
 
     return render_template(
         "index.html",
-        mensaje=mensaje,
+        mensaje=mensaje
+    )
+
+# ================= PANEL ADMIN =================
+
+@app.route("/admin")
+def admin():
+
+    conexion = psycopg2.connect(DATABASE_URL)
+    cursor = conexion.cursor()
+
+    cursor.execute("SELECT * FROM pedidos ORDER BY id DESC")
+
+    pedidos = cursor.fetchall()
+
+    conexion.close()
+
+    return render_template(
+        "admin.html",
         pedidos=pedidos
     )
 
-# ================= INICIAR APP =================
+# ================= MAIN =================
 
 if __name__ == "__main__":
     app.run(debug=True)
