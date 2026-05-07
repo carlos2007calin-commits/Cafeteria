@@ -1,8 +1,10 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>Tetes Coffee</title>
 </head>
+
 <body style="
     background: url('{{ url_for('static', filename='coffee_rorozoa_3_04.jpg') }}') no-repeat center center fixed;
     background-size: cover;
@@ -11,31 +13,89 @@
     font-family: Arial;
 ">
 
-    <div style="background: rgba(0,0,0,0.6); padding:20px; margin-top:50px; display:inline-block; border-radius:10px;">
+    <div style="
+        background: rgba(0,0,0,0.6);
+        padding: 20px;
+        margin-top: 50px;
+        display: inline-block;
+        border-radius: 10px;
+    ">
 
-        <img src="/static/logo.png.png" width="120"><br><br>
-
+        <img src="{{ url_for('static', filename='logo.png') }}" width="120">
+        
         <h1>Tetes Coffee</h1>
         <h3>Ordene lo que guste llevar</h3>
 
         <form method="POST">
-            <input type="text" name="nombre" placeholder="Nombre" style="padding:10px;"><br><br>
 
-            <select name="bebida" style="padding:10px;">
+            <input 
+                type="text" 
+                name="nombre" 
+                placeholder="Nombre"
+                style="padding:10px; width:220px;"
+                required
+            >
+
+            <br><br>
+
+            <select 
+                name="bebida"
+                style="padding:10px; width:240px;"
+            >
                 <option>Café Americano - $30</option>
                 <option>Cappuccino - $45</option>
                 <option>Latte - $40</option>
                 <option>Mocha - $50</option>
-            </select><br><br>
+            </select>
 
-            <button type="submit" style="padding:10px; background:#6D4C41; color:white;">
+            <br><br>
+
+            <button style="
+                padding:10px 20px;
+                background:#6D4C41;
+                color:white;
+                border:none;
+                cursor:pointer;
+                font-size:16px;
+            ">
                 Realizar pedido
             </button>
+
         </form>
+
+        <br>
 
         <h3>{{ mensaje }}</h3>
 
     </div>
+
+    <br><br>
+
+    <h2>Pedidos realizados</h2>
+
+    <table border="1" style="
+        margin:auto;
+        background:white;
+        color:black;
+        border-collapse: collapse;
+        width: 60%;
+    ">
+
+        <tr style="background:#6D4C41; color:white;">
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Bebida</th>
+        </tr>
+
+        {% for p in pedidos %}
+        <tr>
+            <td>{{ p[0] }}</td>
+            <td>{{ p[1] }}</td>
+            <td>{{ p[2] }}</td>
+        </tr>
+        {% endfor %}
+
+    </table>
 
 </body>
 </html>
