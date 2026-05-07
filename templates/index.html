@@ -22,23 +22,24 @@
     ">
 
         <img src="{{ url_for('static', filename='logo.png') }}" width="120">
-        
-        <h1>Tetes Coffee</h1>
+
+        <h1>Tetes Coffee ☕</h1>
+
         <h3>Ordene lo que guste llevar</h3>
 
         <form method="POST">
 
-            <input 
-                type="text" 
-                name="nombre" 
+            <input
+                type="text"
+                name="nombre"
                 placeholder="Nombre"
-                style="padding:10px; width:220px;"
                 required
+                style="padding:10px; width:220px;"
             >
 
             <br><br>
 
-            <select 
+            <select
                 name="bebida"
                 style="padding:10px; width:240px;"
             >
@@ -68,34 +69,6 @@
         <h3>{{ mensaje }}</h3>
 
     </div>
-
-    <br><br>
-
-    <h2>Pedidos realizados</h2>
-
-    <table border="1" style="
-        margin:auto;
-        background:white;
-        color:black;
-        border-collapse: collapse;
-        width: 60%;
-    ">
-
-        <tr style="background:#6D4C41; color:white;">
-            <th>ID</th>
-            <th>Nombre</th>
-            <th>Bebida</th>
-        </tr>
-
-        {% for p in pedidos %}
-        <tr>
-            <td>{{ p[0] }}</td>
-            <td>{{ p[1] }}</td>
-            <td>{{ p[2] }}</td>
-        </tr>
-        {% endfor %}
-
-    </table>
 
 </body>
 </html>
